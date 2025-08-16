@@ -1,5 +1,28 @@
 // constants/products.ts
-export const products = [
+
+export type Product = {
+  id?: number;
+  name?: string;
+  price?: number;
+  originalPrice?: number;
+  image?: string;
+  category?: string;
+  rating?: number;
+  reviews?: number;
+  discount?: number;
+  brand?: string;
+  description?: string;
+  features?: string[];
+  specifications?: {
+    [key: string]: string;
+  };
+  colors?: string[];
+  sizes?: string[];
+  inStock?: boolean;
+  stockCount?: number;
+};
+
+export const products: Product[] = [
   {
     id: 1,
     name: "Wireless Headphones",

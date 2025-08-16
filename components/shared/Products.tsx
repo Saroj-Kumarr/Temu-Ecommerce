@@ -7,7 +7,7 @@ import { ShoppingCart, Heart, Star, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
-import { products } from "@/constants/products";
+import { Product, products } from "@/constants/products";
 import Link from "next/link";
 
 export default function ProductsPage() {
@@ -27,25 +27,25 @@ export default function ProductsPage() {
     ));
   };
 
-  const handleWishlistToggle = (product: any, e: React.MouseEvent) => {
+  const handleWishlistToggle = (product: Product, e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation to product detail page
     e.stopPropagation();
 
-    if (isInWishlist(product.id)) {
+    if (typeof product.id === "number" && isInWishlist(product.id)) {
       removeFromWishlist(product.id);
     } else {
       addToWishlist(product);
     }
   };
 
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation to product detail page
     e.stopPropagation();
     addToCart(product);
   };
 
   const handleQuantityChange = (
-    product: any,
+    product: Product,
     newQuantity: number,
     e: React.MouseEvent
   ) => {
@@ -53,9 +53,13 @@ export default function ProductsPage() {
     e.stopPropagation();
 
     if (newQuantity <= 0) {
-      removeFromCart(product.id);
+      if (typeof product.id === "number") {
+        removeFromCart(product.id);
+      }
     } else {
-      updateQuantity(product.id, newQuantity);
+      if (typeof product.id === "number") {
+        updateQuantity(product.id, newQuantity);
+      }
     }
   };
 
@@ -79,7 +83,10 @@ export default function ProductsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((product) => {
-          const cartItem = getCartItem(product.id);
+          const cartItem =
+            typeof product.id === "number"
+              ? getCartItem(product.id)
+              : undefined;
           const isInCart = !!cartItem;
           const quantity = cartItem?.quantity || 0;
 
@@ -90,17 +97,17 @@ export default function ProductsPage() {
                   {/* Product Image */}
                   <div className="relative overflow-hidden">
                     <Image
-                      src={product.image}
-                      alt={product.name}
+                      src={product.image || "/placeholder.png"}
+                      alt={product.name || "Product Image"}
                       width={300}
                       height={300}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
 
                     {/* Discount Badge */}
-                    {product.discount > 0 && (
+                    {(product.discount ?? 0) > 0 && (
                       <Badge className="absolute top-2 left-2 bg-[#EB5934] text-white">
-                        -{product.discount}%
+                        -{product.discount ?? 0}%
                       </Badge>
                     )}
 
@@ -113,6 +120,7 @@ export default function ProductsPage() {
                     >
                       <Heart
                         className={`w-4 h-4 transition-colors ${
+                          typeof product.id === "number" &&
                           isInWishlist(product.id)
                             ? "text-pink-500 fill-current"
                             : "text-gray-600"
@@ -137,7 +145,9 @@ export default function ProductsPage() {
 
                     {/* Rating */}
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="flex">{renderStars(product.rating)}</div>
+                      <div className="flex">
+                        {renderStars(product.rating ?? 0)}
+                      </div>
                       <span className="text-sm text-gray-500">
                         ({product.reviews})
                       </span>
@@ -148,11 +158,13 @@ export default function ProductsPage() {
                       <span className="text-lg font-bold text-[#EB5934]">
                         ${product.price}
                       </span>
-                      {product.originalPrice > product.price && (
-                        <span className="text-sm text-gray-500 line-through">
-                          ${product.originalPrice}
-                        </span>
-                      )}
+                      {typeof product.price === "number" &&
+                        typeof product.originalPrice === "number" &&
+                        product.originalPrice > product.price && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ${product.originalPrice}
+                          </span>
+                        )}
                     </div>
                   </div>
                 </CardContent>

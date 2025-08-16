@@ -28,7 +28,7 @@ export default function CartPage() {
             Your cart is empty
           </h2>
           <p className="text-gray-600 mb-8">
-            Looks like you haven't added any items to your cart yet.
+            Looks like you haven&apos;t added any items to your cart yet.
           </p>
           <Link href="/">
             <Button className="bg-[#EB5934] hover:bg-[#d14d2a] text-white">
@@ -83,8 +83,8 @@ export default function CartPage() {
                   {/* Product Image */}
                   <div className="flex-shrink-0">
                     <Image
-                      src={item.image}
-                      alt={item.name}
+                      src={item.image || "/placeholder.png"}
+                      alt={item.name || "Product Image"}
                       width={100}
                       height={100}
                       className="w-24 h-24 object-cover rounded-lg"
@@ -100,7 +100,11 @@ export default function CartPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => {
+                          if (typeof item.id === "number") {
+                            removeFromCart(item.id);
+                          }
+                        }}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -117,9 +121,11 @@ export default function CartPage() {
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
-                          }
+                          onClick={() => {
+                            if (typeof item.id === "number") {
+                              updateQuantity(item.id, item.quantity - 1);
+                            }
+                          }}
                           className="h-8 w-8"
                         >
                           <Minus className="w-3 h-3" />
@@ -132,9 +138,11 @@ export default function CartPage() {
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
-                          }
+                          onClick={() => {
+                            if (typeof item.id === "number") {
+                              updateQuantity(item.id, item.quantity + 1);
+                            }
+                          }}
                           className="h-8 w-8"
                         >
                           <Plus className="w-3 h-3" />
@@ -144,7 +152,7 @@ export default function CartPage() {
                       {/* Price */}
                       <div className="text-right">
                         <div className="text-lg font-bold text-[#EB5934]">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${((item.price ?? 0) * item.quantity).toFixed(2)}
                         </div>
                         <div className="text-sm text-gray-500">
                           ${item.price} each

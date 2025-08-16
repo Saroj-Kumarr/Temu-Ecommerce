@@ -15,10 +15,18 @@ import { Eye, EyeOff, Mail, Lock, User, Phone, X } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 
+type UserType = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  isLoggedIn: boolean;
+};
+
 interface CheckoutLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: (userData: any) => void;
+  onLoginSuccess: (userData: UserType) => void;
 }
 
 export default function CheckoutLoginModal({

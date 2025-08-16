@@ -48,11 +48,11 @@ export default function ProductDetails() {
 
   // Set default selections using useEffect
   useEffect(() => {
-    if (product?.colors?.length > 0 && !selectedColor) {
+    if (product?.colors && product.colors.length > 0 && !selectedColor) {
       setSelectedColor(product.colors[0]);
     }
-    if (product?.sizes?.length > 0 && !selectedSize) {
-      setSelectedSize(product.sizes);
+    if (product?.sizes && product.sizes.length > 0 && !selectedSize) {
+      setSelectedSize(product.sizes[0]);
     }
   }, [product, selectedColor, selectedSize]);
 
@@ -78,14 +78,18 @@ export default function ProductDetails() {
 
   const handleCartQuantityChange = (newQuantity: number) => {
     if (newQuantity <= 0) {
-      removeFromCart(product.id);
+      if (typeof product.id === "number") {
+        removeFromCart(product.id);
+      }
     } else {
-      updateQuantity(product.id, newQuantity);
+      if (typeof product.id === "number") {
+        updateQuantity(product.id, newQuantity);
+      }
     }
   };
 
   const handleWishlistToggle = () => {
-    if (isInWishlist(product.id)) {
+    if (typeof product.id === "number" && isInWishlist(product.id)) {
       removeFromWishlist(product.id);
     } else {
       addToWishlist(product);
@@ -161,16 +165,17 @@ export default function ProductDetails() {
               <div className="relative w-full aspect-square sm:aspect-[4/3] bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg order-1 sm:order-2 max-w-md sm:max-w-none mx-auto">
                 <Image
                   src={images[selectedImage]}
-                  alt={product.name}
+                  alt={product.name + " main view"}
                   fill
                   className="object-cover"
                   priority
                 />
-                {product.discount > 0 && (
-                  <Badge className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-[#EB5934] text-white px-2 sm:px-3 py-1 text-xs">
-                    -{product.discount}% OFF
-                  </Badge>
-                )}
+                {typeof product.discount === "number" &&
+                  product.discount > 0 && (
+                    <Badge className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-[#EB5934] text-white px-2 sm:px-3 py-1 text-xs">
+                      -{product.discount}% OFF
+                    </Badge>
+                  )}
 
                 {/* Cart Quantity Badge */}
                 {isInCart && (
@@ -187,7 +192,7 @@ export default function ProductDetails() {
                 >
                   <Heart
                     className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                      isInWishlist(product.id)
+                      typeof product.id === "number" && isInWishlist(product.id)
                         ? "text-pink-500 fill-current"
                         : "text-gray-600"
                     }`}
@@ -216,7 +221,7 @@ export default function ProductDetails() {
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3 sm:mb-4">
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
-                    {renderStars(product.rating)}
+                    {renderStars(product.rating ?? 0)}
                     <span className="ml-1 sm:ml-2 text-sm font-medium">
                       {product.rating}
                     </span>
@@ -243,14 +248,20 @@ export default function ProductDetails() {
               <span className="text-2xl sm:text-3xl font-bold text-[#EB5934]">
                 ${product.price}
               </span>
-              {product.originalPrice > product.price && (
-                <span className="text-base sm:text-lg text-gray-500 line-through">
-                  ${product.originalPrice}
-                </span>
-              )}
-              {product.discount > 0 && (
+              {typeof product.originalPrice === "number" &&
+                typeof product.price === "number" &&
+                product.originalPrice > product.price && (
+                  <span className="text-base sm:text-lg text-gray-500 line-through">
+                    ${product.originalPrice}
+                  </span>
+                )}
+              {typeof product.discount === "number" && product.discount > 0 && (
                 <Badge className="bg-red-100 text-red-700 px-2 py-1 text-xs w-fit">
-                  Save ${(product.originalPrice - product.price).toFixed(2)}
+                  Save{" "}
+                  {typeof product.originalPrice === "number" &&
+                  typeof product.price === "number"
+                    ? (product.originalPrice - product.price).toFixed(2)
+                    : ""}
                 </Badge>
               )}
             </div>
@@ -430,7 +441,7 @@ export default function ProductDetails() {
                 >
                   <Heart
                     className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                      isInWishlist(product.id)
+                      typeof product.id === "number" && isInWishlist(product.id)
                         ? "text-pink-500 fill-current"
                         : "text-gray-600"
                     }`}

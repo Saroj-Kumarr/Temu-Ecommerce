@@ -72,7 +72,7 @@ export default function OrderSuccessPage() {
           <div className="space-y-6 mb-16">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
-                className="group bg-[#EB5934] hover:bg-[#d14d2a] text-white px-8 py-4 rounded-full text-lg font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-0"
+                className="group bg-[#EB5934] hover:bg-[#d14d2a] text-white px-8 py-4 rounded-md text-lg font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-0"
                 asChild
               >
                 <Link href="/" className="flex items-center gap-3">
@@ -84,7 +84,7 @@ export default function OrderSuccessPage() {
 
               <Button
                 variant="ghost"
-                className="group text-[#EB5934] hover:text-[#d14d2a] px-8 py-4 rounded-full text-lg font-medium hover:bg-orange-50 transition-all duration-300"
+                className="group text-[#EB5934] hover:text-[#d14d2a] px-8 py-4 rounded-md text-lg font-medium hover:bg-orange-50 transition-all duration-300"
                 asChild
               >
                 <Link href="/products" className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export default function OrderSuccessPage() {
             <div className="flex items-center justify-center gap-2 text-gray-500">
               <Heart className="w-4 h-4 text-red-400 fill-current" />
               <span className="text-sm">
-                We'll send you an email confirmation shortly
+                We&apos;ll send you an email confirmation shortly
               </span>
             </div>
 

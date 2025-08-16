@@ -31,7 +31,7 @@ export default function CheckoutPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false); // Simple boolean for login state
 
-  const handleLoginSuccess = (userData: any) => {
+  const handleLoginSuccess = () => {
     setIsLogin(true); // Set to true when user logs in
     setShowLoginModal(false);
   };
@@ -255,7 +255,7 @@ export default function CheckoutPage() {
                             </div>
                           </div>
                           <div className="font-medium text-sm whitespace-nowrap">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            ${((item.price ?? 0) * item.quantity).toFixed(2)}
                           </div>
                         </div>
                       ))}

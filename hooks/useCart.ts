@@ -1,19 +1,8 @@
 "use client";
 
+import { Product } from "@/constants/products";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice: number;
-  image: string;
-  category: string;
-  rating: number;
-  reviews: number;
-  discount: number;
-}
 
 export interface CartItem extends Product {
   quantity: number;
@@ -78,7 +67,7 @@ export const useCart = create<CartStore>()(
 
       getTotalPrice: () => {
         return get().cart.reduce(
-          (total, item) => total + item.price * item.quantity,
+          (total, item) => total + (item.price ?? 0) * item.quantity,
           0
         );
       },

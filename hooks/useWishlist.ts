@@ -1,23 +1,12 @@
 "use client";
 
+import { Product } from "@/constants/products";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface WishlistItem {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice: number;
-  image: string;
-  category: string;
-  rating: number;
-  reviews: number;
-  discount: number;
-}
-
 interface WishlistStore {
-  wishlist: WishlistItem[];
-  addToWishlist: (product: WishlistItem) => void;
+  wishlist: Product[];
+  addToWishlist: (product: Product) => void;
   removeFromWishlist: (productId: number) => void;
   clearWishlist: () => void;
   isInWishlist: (productId: number) => boolean;

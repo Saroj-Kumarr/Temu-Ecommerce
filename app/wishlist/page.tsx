@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useCart } from "@/hooks/useCart";
+import { Product } from "@/constants/products";
 
 export default function WishlistPage() {
   const { wishlist, removeFromWishlist, clearWishlist, getWishlistCount } =
@@ -27,9 +28,11 @@ export default function WishlistPage() {
     ));
   };
 
-  const handleAddToCartAndRemove = (product: any) => {
+  const handleAddToCartAndRemove = (product: Product) => {
     addToCart(product);
-    removeFromWishlist(product.id);
+    if (typeof product.id === "number") {
+      removeFromWishlist(product.id);
+    }
   };
 
   if (wishlist.length === 0) {
@@ -41,7 +44,7 @@ export default function WishlistPage() {
             Your wishlist is empty
           </h2>
           <p className="text-gray-600 mb-8">
-            Looks like you haven't added any items to your wishlist yet.
+            Looks like you haven&apos;t added any items to your wishlist yet.
           </p>
           <Link href="/">
             <Button className="bg-[#EB5934] hover:bg-[#d14d2a] text-white">
@@ -97,15 +100,15 @@ export default function WishlistPage() {
               {/* Product Image */}
               <div className="relative overflow-hidden">
                 <Image
-                  src={item.image}
-                  alt={item.name}
+                  src={item.image || "/placeholder.png"}
+                  alt={item.name || "Product Image"}
                   width={300}
                   height={300}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 
                 {/* Discount Badge */}
-                {item.discount > 0 && (
+                {typeof item.discount === "number" && item.discount > 0 && (
                   <Badge className="absolute top-2 left-2 bg-[#EB5934] text-white">
                     -{item.discount}%
                   </Badge>
@@ -116,7 +119,11 @@ export default function WishlistPage() {
                   variant="ghost"
                   size="icon"
                   className="absolute top-2 right-2 bg-white/80 hover:bg-white"
-                  onClick={() => removeFromWishlist(item.id)}
+                  onClick={() => {
+                    if (typeof item.id === "number") {
+                      removeFromWishlist(item.id);
+                    }
+                  }}
                 >
                   <Heart className="w-4 h-4 text-pink-500 fill-current" />
                 </Button>
@@ -138,7 +145,7 @@ export default function WishlistPage() {
 
                 {/* Rating */}
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="flex">{renderStars(item.rating)}</div>
+                  <div className="flex">{renderStars(item.rating ?? 0)}</div>
                   <span className="text-sm text-gray-500">
                     ({item.reviews})
                   </span>
@@ -149,11 +156,13 @@ export default function WishlistPage() {
                   <span className="text-lg font-bold text-[#EB5934]">
                     ${item.price}
                   </span>
-                  {item.originalPrice > item.price && (
-                    <span className="text-sm text-gray-500 line-through">
-                      ${item.originalPrice}
-                    </span>
-                  )}
+                  {typeof item.originalPrice === "number" &&
+                    typeof item.price === "number" &&
+                    item.originalPrice > item.price && (
+                      <span className="text-sm text-gray-500 line-through">
+                        ${item.originalPrice}
+                      </span>
+                    )}
                 </div>
 
                 {/* Action Buttons */}
@@ -169,7 +178,11 @@ export default function WishlistPage() {
                   <Button
                     variant="outline"
                     className="w-full border-red-500 text-red-600 hover:bg-red-500 hover:text-white"
-                    onClick={() => removeFromWishlist(item.id)}
+                    onClick={() => {
+                      if (typeof item.id === "number") {
+                        removeFromWishlist(item.id);
+                      }
+                    }}
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Remove

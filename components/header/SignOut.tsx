@@ -99,7 +99,7 @@ export default function SignOutModal({
                   You will be signed out
                 </p>
                 <p className="text-xs text-yellow-700">
-                  You'll need to sign in again to access your account and
+                  You&apos;ll need to sign in again to access your account and
                   continue shopping.
                 </p>
               </div>
