@@ -221,6 +221,7 @@ export default function Header() {
                   </DropdownMenuItem> */}
                   <DropdownMenuItem className="flex items-center font-medium gap-2 justify-center text-[#EB5934]">
                     <Link
+                      target="_blank"
                       className="flex items-center gap-2 text-[#EB5934]"
                       href="https://temu-admin-app.vercel.app/vendor-signup"
                     >
